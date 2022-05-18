@@ -1,0 +1,5 @@
+mystring = 'what,up,dude,hey'
+mylist = mystring.split(",")
+print(mylist)
+newstring = ''.join(mylist)
+print(newstring)
