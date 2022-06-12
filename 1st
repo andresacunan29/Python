@@ -1,4 +1,4 @@
-mystring = 'what,up,dude,hey'
+mystring = 'hey,how,are,you'
 mylist = mystring.split(",")
 print(mylist)
 newstring = ''.join(mylist)
