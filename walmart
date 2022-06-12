@@ -1,0 +1,38 @@
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName('df').getOrCreate()
+
+#file_location = "/FileStore/tables/walmart_stock.csv"
+#file_type = "csv"
+
+# CSV options
+#infer_schema = "false"
+#first_row_is_header = "false"
+#delimiter = ","
+
+# The applied options are for CSV files. For other file types, these will be ignored.
+#df = spark.read.format(file_type) \
+ # .option("inferSchema", infer_schema) \
+  #.option("header", first_row_is_header) \
+  #.option("sep", delimiter) \
+  #.load(file_location)
+
+#permanent_table_name = "walmart_stock_csv"
+#df.write.format("parquet").saveAsTable(permanent_table_name)
+#data = spark.read.csv('walmart_stock.csv',header=True, inferSchema = True)
+df1 = spark.read.format("csv").option("header", "true").load("dbfs:/FileStore/shared_uploads/andresdanielito@hotmail.com/walmart_stock-2.csv")
+#df1.columns
+#df1.printSchema()
+
+#for row in df1.head(5):
+   # print (row)
+   # print('\n')
+df1.describe().show()
+from pyspark.sql.functions import format_number
+answer = df1.describe()
+answer.select(answer['summary'],
+             format_number(answer['Open'].cast('float'),2).alias('Open'),
+             format_number(answer['High'].cast('float'),2).alias('High'),
+             format_number(answer['Low'].cast('float'),2).alias('Low'),
+             format_number(answer['Close'].cast('float'),2).alias('Close'),
+             answer['Volume'].cast('int').alias('Volume')
+             ).show()
